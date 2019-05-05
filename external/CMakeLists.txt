@@ -11,6 +11,7 @@ endif()
 
 # Add CLI11
 if(NOT TARGET CLI11)
+    set(CLI11_TESTING OFF CACHE INTERNAL "")
     add_subdirectory(CLI11)
 endif()
 
