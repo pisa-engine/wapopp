@@ -19,8 +19,9 @@ namespace detail {
     {
         if (auto ptr = std::get_if<T>(&v); ptr != nullptr) {
             return std::move(*ptr);
+        } else {
+            throw std::invalid_argument("Couldn't access required type");
         }
-        throw std::bad_variant_access();
     }
 
     // Due to AppleClang's lack of support
