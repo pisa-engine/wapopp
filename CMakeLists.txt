@@ -1,0 +1,87 @@
+cmake_minimum_required(VERSION 3.0)
+project(wapopp VERSION 1.0 LANGUAGES CXX)
+
+if (CMAKE_BUILD_TYPE)
+    message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+endif()
+include(cmake/verify_version.cmake)
+
+#
+# CONFIGURATION
+#
+set(WAPOPP_TARGET_NAME ${PROJECT_NAME})
+set(WAPOPP_CONFIG_INSTALL_DIR "lib/cmake/${PROJECT_NAME}" CACHE INTERNAL "")
+set(WAPOPP_INCLUDE_BUILD_DIR "${PROJECT_SOURCE_DIR}/include")
+set(WAPOPP_INCLUDE_INSTALL_DIR "include")
+set(WAPOPP_TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")
+set(WAPOPP_CMAKE_CONFIG_TEMPLATE "cmake/config.cmake.in")
+set(WAPOPP_CMAKE_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+set(WAPOPP_CMAKE_VERSION_CONFIG_FILE
+    "${WAPOPP_CMAKE_CONFIG_DIR}/${PROJECT_NAME}ConfigVersion.cmake")
+set(WAPOPP_CMAKE_PROJECT_CONFIG_FILE
+    "${WAPOPP_CMAKE_CONFIG_DIR}/${PROJECT_NAME}Config.cmake")
+set(WAPOPP_CMAKE_PROJECT_TARGETS_FILE
+    "${WAPOPP_CMAKE_CONFIG_DIR}/${PROJECT_NAME}Targets.cmake")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+#
+# OPTIONS
+#
+option(WAPOPP_ENABLE_TESTING "Enable testing of the library." ON)
+
+#
+# DEPENDENCIES
+#
+add_subdirectory(external)
+
+#
+# ADD LIBRARY
+#
+add_library(${WAPOPP_TARGET_NAME}
+    "${PROJECT_SOURCE_DIR}/include/wapopp/wapopp.hpp"
+    "${PROJECT_SOURCE_DIR}/src/wapopp.cpp")
+target_link_libraries(${WAPOPP_TARGET_NAME} PRIVATE nlohmann_json::nlohmann_json)
+target_include_directories(${WAPOPP_TARGET_NAME} PUBLIC
+    $<BUILD_INTERFACE:${WAPOPP_INCLUDE_BUILD_DIR}>
+    $<INSTALL_INTERFACE:${WAPOPP_INCLUDE_INSTALL_DIR}>
+)
+
+#
+# TESTING
+#
+if (WAPOPP_ENABLE_TESTING AND BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(test)
+endif()
+
+#
+# INSTALL install header files, generate and install cmake config files for
+# find_package()
+#
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(${WAPOPP_CMAKE_VERSION_CONFIG_FILE}
+                                 COMPATIBILITY SameMajorVersion)
+configure_file(${WAPOPP_CMAKE_CONFIG_TEMPLATE} ${WAPOPP_CMAKE_PROJECT_CONFIG_FILE}
+               @ONLY)
+
+install(FILES "${WAPOPP_INCLUDE_BUILD_DIR}/${PROJECT_NAME}/wapopp.hpp"
+        DESTINATION ${WAPOPP_INCLUDE_INSTALL_DIR})
+install(FILES
+        ${WAPOPP_CMAKE_PROJECT_CONFIG_FILE}
+        ${WAPOPP_CMAKE_VERSION_CONFIG_FILE}
+        DESTINATION ${WAPOPP_CONFIG_INSTALL_DIR})
+export(TARGETS ${WAPOPP_TARGET_NAME}
+       NAMESPACE ${PROJECT_NAME}::
+       FILE ${WAPOPP_CMAKE_PROJECT_TARGETS_FILE})
+install(TARGETS ${WAPOPP_TARGET_NAME}
+        EXPORT ${WAPOPP_TARGETS_EXPORT_NAME}
+        INCLUDES
+        DESTINATION ${WAPOPP_INCLUDE_INSTALL_DIR}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        COMPONENT library)
+install(EXPORT ${WAPOPP_TARGETS_EXPORT_NAME}
+        NAMESPACE ${PROJECT_NAME}::
+        DESTINATION ${WAPOPP_CONFIG_INSTALL_DIR})
