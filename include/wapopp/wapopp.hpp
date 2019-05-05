@@ -8,7 +8,8 @@
 namespace wapopp {
 
 struct Error {
-    std::string msg;
+    std::string msg{};
+    std::string json{};
 };
 struct Record;
 using Result = std::variant<Record, Error>;

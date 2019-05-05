@@ -41,10 +41,10 @@ namespace detail {
             } catch (std::exception const &) {
                 std::ostringstream os;
                 os << "Failed to parse " << field << " (" << *pos << ") to a requested type";
-                return Error{os.str()};
+                return Error{os.str(), node.dump()};
             }
         } else {
-            return Error{std::string("Missing ") + field};
+            return Error{std::string("Missing ") + field, node.dump()};
         }
     }
 

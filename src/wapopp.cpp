@@ -52,6 +52,6 @@ void append_content(nlohmann::json const &node, std::vector<Content> &contents, 
                       data["published_date"],
                       std::move(contents)};
     } catch (nlohmann::detail::exception const& error) {
-        return Error{error.what()};
+        return Error{error.what(), line};
     }
 }
