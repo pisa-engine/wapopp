@@ -32,6 +32,22 @@ namespace detail {
     }
 
     template <class T>
+    [[nodiscard]] auto read_field_or(nlohmann::json const &node,
+                                     std::string const &field,
+                                     T default_value) -> T
+    {
+        if (auto pos = node.find(field); pos != node.end()) {
+            try {
+                return pos->get<T>();
+            } catch (std::exception const &) {
+                return default_value;
+            }
+        } else {
+            return default_value;
+        }
+    }
+
+    template <class T>
     [[nodiscard]] auto read_mandatory_field(nlohmann::json const &node, std::string const &field)
         -> std::variant<T, Error>
     {

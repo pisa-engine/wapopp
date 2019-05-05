@@ -44,12 +44,12 @@ void append_content(nlohmann::json const &node, std::vector<Content> &contents, 
             }
         }
         return Record{data["id"],
-                      data["article_url"],
-                      data["title"],
-                      data["author"],
-                      data["type"],
-                      data["source"],
-                      data["published_date"],
+                      detail::read_field_or<std::string>(data, "article_url", ""),
+                      detail::read_field_or<std::string>(data, "title", ""),
+                      detail::read_field_or<std::string>(data, "author", ""),
+                      detail::read_field_or<std::string>(data, "type", ""),
+                      detail::read_field_or<std::string>(data, "source", ""),
+                      detail::read_field_or<std::uint64_t>(data, "published_date", 0u),
                       std::move(contents)};
     } catch (nlohmann::detail::exception const& error) {
         return Error{error.what(), line};

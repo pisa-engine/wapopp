@@ -13,7 +13,7 @@ TEST_CASE("Read record", "[unit]")
         R"({"id": "b2e89334-33f9-11e1-825f-dabc29fd7071",)"
         R"("article_url": "https://www.washingtonpost.com/truncated.html",)"
         R"("title": "Danny Coale, Jarrett Boykin are a perfect 1-2 punch for Virginia Tech",)"
-        R"("author": "Mark Giannotto",)"
+        R"("author": null,)"
         R"("published_date": 1325376562000,)"
         R"("contents": [)"
         R"({)"
@@ -79,7 +79,7 @@ TEST_CASE("Read record", "[unit]")
     REQUIRE(record.id == j["id"]);
     REQUIRE(record.url == j["article_url"]);
     REQUIRE(record.title == j["title"]);
-    REQUIRE(record.author == j["author"]);
+    REQUIRE(record.author == "");
     REQUIRE(record.published == j["published_date"]);
     REQUIRE(record.type == j["type"]);
     REQUIRE(record.source == j["source"]);
