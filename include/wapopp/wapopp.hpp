@@ -10,7 +10,7 @@ namespace wapopp {
 struct Error {
     std::string msg;
 };
-class Record;
+struct Record;
 using Result = std::variant<Record, Error>;
 
 struct SimpleContent {
