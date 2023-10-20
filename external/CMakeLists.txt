@@ -1,8 +1,3 @@
-EXECUTE_PROCESS(COMMAND git submodule update --init
-                WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/..
-                OUTPUT_QUIET
-        )
-
 # Add JSON for Modern C++
 if(NOT TARGET nlohmann_json)
     set(JSON_BuildTests OFF CACHE INTERNAL "")
