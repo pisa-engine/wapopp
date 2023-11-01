@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 project(wapopp VERSION 1.0 LANGUAGES CXX)
 
 if (CMAKE_BUILD_TYPE)

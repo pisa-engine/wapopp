@@ -1,9 +1,11 @@
 #pragma once
 
+#include <cstdint>
 #include <istream>
 #include <ostream>
 #include <string>
 #include <variant>
+#include <vector>
 
 namespace wapopp {
 
@@ -18,14 +20,10 @@ struct SimpleContent {
     std::string content;
     std::string mime;
 };
-struct Kicker : public SimpleContent {
-};
-struct Title : public SimpleContent {
-};
-struct Byline : public SimpleContent {
-};
-struct Text : public SimpleContent {
-};
+struct Kicker : public SimpleContent {};
+struct Title : public SimpleContent {};
+struct Byline : public SimpleContent {};
+struct Text : public SimpleContent {};
 struct Date {
     std::uint64_t timestamp;
 };

@@ -1,6 +1,6 @@
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include <sstream>
 
+#include <catch2/catch_test_macros.hpp>
 #include <nlohmann/json.hpp>
 
 #include "wapopp/wapopp.hpp"
